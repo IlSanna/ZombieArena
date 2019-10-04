@@ -46,8 +46,17 @@ int main() {
 
 				}
 			}
+		}//end polling
+		if (Keyboard::isKeyPressed(Keyboard::Escape)) {
+			window.close();
 		}
-	}
+		if (state == State::PLAYING) {
+			Keyboard::isKeyPressed(Keyboard::W) ? player.moveUp() : player.stopUp();
+			Keyboard::isKeyPressed(Keyboard::S) ? player.moveDown() : player.stopDown();
+			Keyboard::isKeyPressed(Keyboard::A) ? player.moveLeft() : player.stopLeft();
+			Keyboard::isKeyPressed(Keyboard::D) ? player.moveRight() : player.stopRight();
+		}//end wasd while playing
+	}//end game loop
 
 	return 0;
 }
