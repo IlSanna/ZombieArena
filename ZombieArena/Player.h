@@ -13,6 +13,7 @@ private:
 	Vector2f m_Resolution;
 	IntRect m_Arena;
 	int m_TileSize;
+	Vector2f m_Position;
 	//moving directions
 	bool m_UpPressed;
 	bool m_DownPressed;

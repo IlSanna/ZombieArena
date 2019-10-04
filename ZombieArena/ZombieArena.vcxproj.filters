@@ -15,7 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="HelloSFML.cpp">
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ZombieArena.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
