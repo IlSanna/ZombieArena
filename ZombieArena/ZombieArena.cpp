@@ -56,6 +56,29 @@ int main() {
 			Keyboard::isKeyPressed(Keyboard::A) ? player.moveLeft() : player.stopLeft();
 			Keyboard::isKeyPressed(Keyboard::D) ? player.moveRight() : player.stopRight();
 		}//end wasd while playing
+		// Handle the LEVELING up state
+		if (state == State::LEVELING_UP) {
+			// Handle the player LEVELING up
+			if (event.key.code == Keyboard::Num1) { state = State::PLAYING; }
+			if (event.key.code == Keyboard::Num2) { state = State::PLAYING; }
+			if (event.key.code == Keyboard::Num3) { state = State::PLAYING; }
+			if (event.key.code == Keyboard::Num4) { state = State::PLAYING; }
+			if (event.key.code == Keyboard::Num5) { state = State::PLAYING; }
+			if (event.key.code == Keyboard::Num6) { state = State::PLAYING; }
+			
+			if (state == State::PLAYING) {
+				// Prepare the level
+				// We will modify the next two lines later
+				arena.width = 500;
+				arena.height = 500;
+				arena.left = 0;
+				arena.top = 0;
+				int tileSize = 50;
+				// Spawn the player in the middle of the arena
+				player.spawn(arena, resolution, tileSize);
+				clock.restart();// Reset the clock so there isn't a frame jump
+			}
+		}//end leveling up
 	}//end game loop
 
 	return 0;
