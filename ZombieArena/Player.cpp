@@ -6,9 +6,10 @@ Player::Player() {
 	m_MaxHealth = START_HEALTH;
 	m_Health = START_HEALTH;*/
 
-	m_Texture.loadFromFile("Graphics/player.png");
+	m_Texture.loadFromFile("src/Graphics/player.png");
 	m_Sprite.setTexture(m_Texture);
 	m_Sprite.setOrigin(25, 25);//for a smoother rotation, set the origin to the center
+	m_Sprite.setScale(0.5, 0.5);
 }
 void Player::spawn(IntRect arena, Vector2f resolution, int tileSize) {
 	m_Position.x = arena.width / 2;

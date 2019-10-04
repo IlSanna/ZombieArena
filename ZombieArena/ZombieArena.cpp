@@ -4,15 +4,15 @@
 using namespace sf;
 
 int main() {
-
+	//Init
 	enum class State {//game states
 		PAUSED, GAME_OVER, PLAYING, LEVELING_UP
 	};
 	State state = State::GAME_OVER;//starting from game over state
 	Vector2f resolution;
 	//get screen resolution
-	resolution.x = VideoMode::getDesktopMode().width;//potrei dividere per 2
-	resolution.y = VideoMode::getDesktopMode().height;
+	resolution.x = VideoMode::getDesktopMode().width/2;//potrei dividere per 2
+	resolution.y = VideoMode::getDesktopMode().height/2;
 	RenderWindow window(VideoMode(resolution.x, resolution.y),"Zombie Arena", Style::None);
 	View mainView(FloatRect(0,0,resolution.x,resolution.y));
 
@@ -50,6 +50,7 @@ int main() {
 		if (Keyboard::isKeyPressed(Keyboard::Escape)) {
 			window.close();
 		}
+		//handle player inputs
 		if (state == State::PLAYING) {
 			Keyboard::isKeyPressed(Keyboard::W) ? player.moveUp() : player.stopUp();
 			Keyboard::isKeyPressed(Keyboard::S) ? player.moveDown() : player.stopDown();
@@ -79,6 +80,37 @@ int main() {
 				clock.restart();// Reset the clock so there isn't a frame jump
 			}
 		}//end leveling up
+		//handle frame update
+		if (state == State::PLAYING) {
+			Time deltaTime = clock.restart();//update delta time
+			gameTimeTotal += deltaTime;//update game time
+			float deltaTimeAsSeconds = deltaTime.asSeconds();
+			/* Mouse::getPosition() use of a static function 
+			   If we define a function in a class with the static keyword, 
+			   we are able to call that function using the class name and 
+			   without an instance of the class
+			 */
+			mouseScreenPosition = Mouse::getPosition();//where is the mouse
+			//convert mouse screen pos to word pos
+			mouseWorldPosition = window.mapPixelToCoords(Mouse::getPosition(), mainView);
+			player.update(deltaTimeAsSeconds, Mouse::getPosition()/2);
+			Vector2f playerPos(player.getCenter());//take player new pos
+			mainView.setCenter(player.getCenter());//the view/camera follow the player
+		}//end updating the frame/scene
+		//handle the drawing
+		if (state == State::PLAYING) {
+			window.clear();
+			window.setView(mainView);
+			window.draw(player.getSprite());
+		}
+		if (state == State::LEVELING_UP) {
+		}
+		if (state == State::PAUSED) {
+		}
+		if (state == State::GAME_OVER) {
+		}
+		window.display();
+		//end of the drawing
 	}//end game loop
 
 	return 0;
