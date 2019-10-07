@@ -158,6 +158,7 @@
   <ItemGroup>
     <ClCompile Include="CreateBackground.cpp" />
     <ClCompile Include="TextureHolder.cpp" />
+    <ClCompile Include="Zombie.cpp" />
     <ClCompile Include="ZombieArena.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
