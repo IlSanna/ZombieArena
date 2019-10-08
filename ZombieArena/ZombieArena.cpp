@@ -5,6 +5,8 @@ using namespace sf;
 
 int main() {
 	//Init
+	TextureHolder holder;
+	
 	enum class State {//game states
 		PAUSED, GAME_OVER, PLAYING, LEVELING_UP
 	};
@@ -27,6 +29,9 @@ int main() {
 	VertexArray background;
 	Texture textureBackground;
 	textureBackground.loadFromFile("src/Graphics/background_sheet.png");
+
+	int numZombies, numZombiesAlive;
+	Zombie* zombies;
 
 	while (window.isOpen()) {
 		//input handlings
@@ -81,6 +86,12 @@ int main() {
 				//int tileSize = 50;
 				// Spawn the player in the middle of the arena
 				player.spawn(arena, resolution, tileSize);
+				//init zombies
+				numZombies = 10;
+				delete[] zombies;
+				zombies = createHorde(numZombies, arena);
+				numZombiesAlive = numZombies;
+
 				clock.restart();// Reset the clock so there isn't a frame jump
 			}
 		}//end leveling up
@@ -100,6 +111,10 @@ int main() {
 			player.update(deltaTimeAsSeconds, Mouse::getPosition()/2);
 			Vector2f playerPos(player.getCenter());//take player new pos
 			mainView.setCenter(player.getCenter());//the view/camera follow the player
+
+			for (int i = 0; i < numZombies; i++) {
+				if (zombies[i].isAlive()) { zombies[i].update(deltaTime.asSeconds(), playerPos); }
+			}
 		}//end updating the frame/scene
 		//handle the drawing
 		if (state == State::PLAYING) {

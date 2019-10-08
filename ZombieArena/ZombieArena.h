@@ -2,6 +2,7 @@
 #include <SFML\Graphics.hpp>
 #include "Player.h"
 #include "Zombie.h"
+#include "TextureHolder.h"
 
 using namespace sf;
 
