@@ -40,6 +40,20 @@ void Zombie::spawn(float startX, float startY, int type, int seed) {
 	m_Sprite.setPosition(m_Position);
 }
 
+void Zombie::update(float elapsedTime, Vector2f playerLocation) {
+	float playerX = playerLocation.x;
+	float playerY = playerLocation.y;
+
+	playerX > m_Position.x ? m_Position.x += m_Speed * elapsedTime:
+							 m_Position.x -= m_Speed * elapsedTime;
+	playerY > m_Position.y ? m_Position.y += m_Speed * elapsedTime:
+							 m_Position.y -= m_Speed * elapsedTime;
+	m_Sprite.setPosition(m_Position);
+	//Y(target - currentpos),X(target - currentpos)
+	float angle = (atan2(playerY - m_Position.y , playerX - m_Position.x ) * 180) / 3.14;
+	m_Sprite.setRotation(angle);
+}
+
 bool Zombie::hit() {
 	m_Health--;
 	if (m_Health < 0) {//is dead?
