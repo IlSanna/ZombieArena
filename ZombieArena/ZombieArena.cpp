@@ -31,7 +31,7 @@ int main() {
 	textureBackground.loadFromFile("src/Graphics/background_sheet.png");
 
 	int numZombies, numZombiesAlive;
-	Zombie* zombies;
+	Zombie* zombies = new Zombie[5];//must be initialized the first time
 
 	while (window.isOpen()) {
 		//input handlings
@@ -86,6 +86,7 @@ int main() {
 				//int tileSize = 50;
 				// Spawn the player in the middle of the arena
 				player.spawn(arena, resolution, tileSize);
+
 				//init zombies
 				numZombies = 10;
 				delete[] zombies;
@@ -121,6 +122,7 @@ int main() {
 			window.clear();
 			window.setView(mainView);
 			window.draw(background, &textureBackground);
+			for (int i = 0; i < numZombies; i++) { window.draw(zombies[i].getSprite());}
 			window.draw(player.getSprite());
 		}
 		if (state == State::LEVELING_UP) {
@@ -133,5 +135,6 @@ int main() {
 		//end of the drawing
 	}//end game loop
 
+	delete[] zombies;
 	return 0;
 }
