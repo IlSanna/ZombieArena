@@ -39,3 +39,24 @@ void Zombie::spawn(float startX, float startY, int type, int seed) {
 	m_Sprite.setScale(0.5, 0.5);
 	m_Sprite.setPosition(m_Position);
 }
+
+bool Zombie::hit() {
+	m_Health--;
+	if (m_Health < 0) {//is dead?
+		m_Alive = false;
+		m_Sprite = Sprite(TextureHolder::GetTexture("src/Graphics/blood.png"));
+		return true;
+	}
+	return false;
+}
+
+bool Zombie::isAlive() {
+	return m_Alive;
+}
+FloatRect Zombie::getPosition() {
+	return m_Sprite.getGlobalBounds();
+}
+
+Sprite Zombie::getSprite() {
+	return m_Sprite;
+}

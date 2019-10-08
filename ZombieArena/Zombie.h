@@ -27,9 +27,9 @@ private:
 public:
 	// Handle when a bullet hits a zombie
 	bool hit();
-	bool isAlive();
 	void spawn(float startX, float startY, int type, int seed);
+	void update(float elapsedTime, Vector2f playerLocation);
 	FloatRect getPosition();
 	Sprite getSprite();
-	void update(float elapsedTime, Vector2f playerLocation);
+	bool isAlive();
 };
