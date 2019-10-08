@@ -39,7 +39,8 @@ void Zombie::spawn(float startX, float startY, int type, int seed) {
 	m_Sprite.setScale(0.5, 0.5);
 	m_Sprite.setPosition(m_Position);
 }
-
+//bottleneck of this moving method is that 
+//zombies are not aware of the environment
 void Zombie::update(float elapsedTime, Vector2f playerLocation) {
 	float playerX = playerLocation.x;
 	float playerY = playerLocation.y;
