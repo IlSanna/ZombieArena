@@ -5,7 +5,7 @@ using namespace sf;
 
 class Bullet {
 private:
-	Vector2f m_position;
+	Vector2f m_Position;
 	float m_speed = 500;
 	RectangleShape m_BulletShape;
 	bool m_Flying = false;
@@ -27,7 +27,7 @@ public:
 	// Returns the value of m_InFlight
 	bool isFlying();
 	// Launch a new bullet
-	void shoot(float startX, float startY, float xTarget, float yTarget);
+	void shoot(float startX, float startY, float targetX, float targetY);
 	// Update the bullet each frame
 	void update(float elapsedTime);
 	// Tell the calling code where the bullet is in the world
