@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Zombie.h"
 #include "TextureHolder.h"
+#include "Bullet.h"
 
 using namespace sf;
 

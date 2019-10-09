@@ -33,6 +33,15 @@ int main() {
 	int numZombies, numZombiesAlive;
 	Zombie* zombies = new Zombie[5];//must be initialized the first time
 
+	Bullet bullets[100];
+	int currentBullet = 0;
+	int bulletsSpare = 24;
+	int bulletsInClip = 6;
+	int clipSize = 6;
+	float fireRate = 1;
+	
+	Time lastPressed;// When was the fire button last pressed?
+
 	while (window.isOpen()) {
 		//input handlings
 		Event event;
@@ -51,7 +60,22 @@ int main() {
 					state = State::LEVELING_UP;
 				}
 				if (state == State::PLAYING) {
-
+					// Reloading
+					if (event.key.code == Keyboard::R) {
+						if (bulletsSpare >= clipSize) {
+							// Plenty of bullets. Reload.
+							bulletsInClip = clipSize;
+							bulletsSpare -= clipSize;
+						}
+						else if (bulletsSpare > 0) {
+							// Only few bullets left
+							bulletsInClip = bulletsSpare;
+							bulletsSpare = 0;
+						}
+						else {
+							// More here soon?!
+						}
+					}
 				}
 			}
 		}//end polling
@@ -60,10 +84,26 @@ int main() {
 		}
 		//handle player inputs
 		if (state == State::PLAYING) {
+			//movement
 			Keyboard::isKeyPressed(Keyboard::W) ? player.moveUp() : player.stopUp();
 			Keyboard::isKeyPressed(Keyboard::S) ? player.moveDown() : player.stopDown();
 			Keyboard::isKeyPressed(Keyboard::A) ? player.moveLeft() : player.stopLeft();
 			Keyboard::isKeyPressed(Keyboard::D) ? player.moveRight() : player.stopRight();
+
+			if (Mouse::isButtonPressed(Mouse::Left)) {
+				//1000 because this is the number of milliseconds in a second.
+				if ( (gameTimeTotal.asMilliseconds() - lastPressed.asMilliseconds() > 1000 / fireRate)
+					 && bulletsInClip > 0 ) {//can shoot
+					bullets[currentBullet].shoot(player.getCenter().x, player.getCenter().y,
+						mouseWorldPosition.x, mouseWorldPosition.y);
+					currentBullet++;
+					if (currentBullet > 99) {
+						currentBullet = 0;
+					}
+					lastPressed = gameTimeTotal;
+					bulletsInClip--;
+				}
+			}//end firing
 		}//end wasd while playing
 		// Handle the LEVELING up state
 		if (state == State::LEVELING_UP) {
@@ -108,7 +148,7 @@ int main() {
 			 */
 			mouseScreenPosition = Mouse::getPosition();//where is the mouse
 			//convert mouse screen pos to word pos
-			mouseWorldPosition = window.mapPixelToCoords(Mouse::getPosition(), mainView);
+			mouseWorldPosition = window.mapPixelToCoords(Mouse::getPosition()/2, mainView);
 			player.update(deltaTimeAsSeconds, Mouse::getPosition()/2);
 			Vector2f playerPos(player.getCenter());//take player new pos
 			mainView.setCenter(player.getCenter());//the view/camera follow the player
@@ -116,13 +156,21 @@ int main() {
 			for (int i = 0; i < numZombies; i++) {
 				if (zombies[i].isAlive()) { zombies[i].update(deltaTime.asSeconds(), playerPos); }
 			}
+			for (int i = 0; i < 100; i++) {
+				if (bullets[i].isFlying()) { bullets[i].update(deltaTimeAsSeconds); }
+			}
 		}//end updating the frame/scene
 		//handle the drawing
 		if (state == State::PLAYING) {
 			window.clear();
 			window.setView(mainView);
 			window.draw(background, &textureBackground);
-			for (int i = 0; i < numZombies; i++) { window.draw(zombies[i].getSprite());}
+			//for (int i = 0; i < numZombies; i++) { window.draw(zombies[i].getSprite());}
+			for (int i = 0; i < 100; i++) { 
+				if (bullets[i].isFlying()) { 
+					window.draw(bullets[i].getShape());
+				} 
+			}
 			window.draw(player.getSprite());
 		}
 		if (state == State::LEVELING_UP) {
