@@ -42,6 +42,14 @@ int main() {
 	
 	Time lastPressed;// When was the fire button last pressed?
 
+	// Hide the mouse pointer and replace it with crosshair
+	window.setMouseCursorVisible(false);
+	Sprite spriteCrosshair;
+	Texture textureCrosshair = TextureHolder::GetTexture("src/Graphics/crosshair.png");
+	spriteCrosshair.setTexture(textureCrosshair);
+	spriteCrosshair.setOrigin(25, 25);
+	spriteCrosshair.setScale(0.5, 0.5);
+
 	while (window.isOpen()) {
 		//input handlings
 		Event event;
@@ -149,6 +157,7 @@ int main() {
 			mouseScreenPosition = Mouse::getPosition();//where is the mouse
 			//convert mouse screen pos to word pos
 			mouseWorldPosition = window.mapPixelToCoords(Mouse::getPosition()/2, mainView);
+			spriteCrosshair.setPosition(mouseWorldPosition);
 			player.update(deltaTimeAsSeconds, Mouse::getPosition()/2);
 			Vector2f playerPos(player.getCenter());//take player new pos
 			mainView.setCenter(player.getCenter());//the view/camera follow the player
@@ -166,12 +175,14 @@ int main() {
 			window.setView(mainView);
 			window.draw(background, &textureBackground);
 			//for (int i = 0; i < numZombies; i++) { window.draw(zombies[i].getSprite());}
+			//draw bullets
 			for (int i = 0; i < 100; i++) { 
 				if (bullets[i].isFlying()) { 
 					window.draw(bullets[i].getShape());
 				} 
 			}
 			window.draw(player.getSprite());
+			window.draw(spriteCrosshair);
 		}
 		if (state == State::LEVELING_UP) {
 		}
