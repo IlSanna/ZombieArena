@@ -6,12 +6,12 @@ Pickup::Pickup(int type) {
 	m_Type = type;
 	// Associate the texture with the sprite
 	if (m_Type == 1) {
-		m_Sprite = Sprite(TextureHolder::GetTexture("graphics/health_pickup.png"));
+		m_Sprite = Sprite(TextureHolder::GetTexture("src/Graphics/health_pickup.png"));
 		// How much is pickup worth
 		m_Value = HEALTH_START_VALUE;
 	}
 	else {
-		m_Sprite = Sprite(TextureHolder::GetTexture("graphics/ammo_pickup.png"));
+		m_Sprite = Sprite(TextureHolder::GetTexture("src/Graphics/ammo_pickup.png"));
 		// How much is pickup worth
 		m_Value = AMMO_START_VALUE;
 	}
