@@ -4,6 +4,7 @@
 #include "Zombie.h"
 #include "TextureHolder.h"
 #include "Bullet.h"
+#include "Pickup.h"
 
 using namespace sf;
 

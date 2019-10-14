@@ -50,6 +50,9 @@ int main() {
 	spriteCrosshair.setOrigin(25, 25);
 	spriteCrosshair.setScale(0.5, 0.5);
 
+	Pickup healthPickup(1);
+	Pickup ammoPickup(2);
+
 	while (window.isOpen()) {
 		//input handlings
 		Event event;
@@ -135,6 +138,10 @@ int main() {
 				// Spawn the player in the middle of the arena
 				player.spawn(arena, resolution, tileSize);
 
+				// Configure the pickups
+				healthPickup.setArena(arena);
+				ammoPickup.setArena(arena);
+
 				//init zombies
 				numZombies = 10;
 				delete[] zombies;
@@ -163,11 +170,14 @@ int main() {
 			mainView.setCenter(player.getCenter());//the view/camera follow the player
 
 			for (int i = 0; i < numZombies; i++) {
-				if (zombies[i].isAlive()) { zombies[i].update(deltaTime.asSeconds(), playerPos); }
+				if (zombies[i].isAlive()) { zombies[i].update(deltaTimeAsSeconds, playerPos); }
 			}
 			for (int i = 0; i < 100; i++) {
 				if (bullets[i].isFlying()) { bullets[i].update(deltaTimeAsSeconds); }
 			}
+			// Update the pickups
+			healthPickup.update(deltaTimeAsSeconds);
+			ammoPickup.update(deltaTimeAsSeconds);
 		}//end updating the frame/scene
 		//handle the drawing
 		if (state == State::PLAYING) {
@@ -181,6 +191,8 @@ int main() {
 					window.draw(bullets[i].getShape());
 				} 
 			}
+			if (ammoPickup.isSpawned()) { window.draw(ammoPickup.getSprite()); }
+			if (healthPickup.isSpawned()) { window.draw(healthPickup.getSprite()); }
 			window.draw(player.getSprite());
 			window.draw(spriteCrosshair);
 		}
