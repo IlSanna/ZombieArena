@@ -68,31 +68,31 @@ int main() {
 	Sprite spriteAmmoIcon;
 	Texture textureAmmoIcon = TextureHolder::GetTexture("src/Graphics/ammo_icon.png");
 	spriteAmmoIcon.setTexture(textureAmmoIcon);
-	spriteAmmoIcon.setPosition(20, 400);
-	spriteAmmoIcon.setScale(0.5, 0.5);
+	spriteAmmoIcon.setPosition(20, resolution.y - 50);
+	spriteAmmoIcon.setScale(0.7, 0.7);
 	// Load the font
 	Font font;
-	font.loadFromFile("src/Fonts/zombiecontrol.ttf");
+	font.loadFromFile("src/Fonts/Kust.ttf");
 	// Paused
 	Text pausedText;
 	pausedText.setFont(font);
-	pausedText.setCharacterSize(120);
+	pausedText.setCharacterSize(50);
 	pausedText.setFillColor(Color::White);
 	pausedText.setPosition(resolution.x/2, resolution.y / 2);
 	pausedText.setString("Press Enter \n to continue");
 	// Game Over
 	Text gameOverText;
 	gameOverText.setFont(font);
-	gameOverText.setCharacterSize(125);
+	gameOverText.setCharacterSize(50);
 	gameOverText.setFillColor(Color::White);
-	gameOverText.setPosition(resolution.x / 2, resolution.y / 2);
+	gameOverText.setPosition((resolution.x / 2)-250, resolution.y / 2);
 	gameOverText.setString("Press Enter to play");
 	// LEVELING up
 	Text levelUpText;
 	levelUpText.setFont(font);
-	levelUpText.setCharacterSize(80);
+	levelUpText.setCharacterSize(40);
 	levelUpText.setFillColor(Color::White);
-	levelUpText.setPosition(150, 250);
+	levelUpText.setPosition(150, 200);
 	std::stringstream levelUpStream;
 	levelUpStream <<
 		"1- Increased rate of fire" <<
@@ -105,43 +105,44 @@ int main() {
 	// Ammo
 	Text ammoText;
 	ammoText.setFont(font);
-	ammoText.setCharacterSize(55);
+	ammoText.setCharacterSize(30);
 	ammoText.setFillColor(Color::White);
-	ammoText.setPosition(140, resolution.y - 100);
+	ammoText.setPosition(60, resolution.y - 50);
 	// Score
 	Text scoreText;
 	scoreText.setFont(font);
-	scoreText.setCharacterSize(55);
+	scoreText.setCharacterSize(30);
 	scoreText.setFillColor(Color::White);
 	scoreText.setPosition(20, 0);
 	// Hi Score
 	Text hiScoreText;
 	hiScoreText.setFont(font);
-	hiScoreText.setCharacterSize(55);
+	hiScoreText.setCharacterSize(30);
 	hiScoreText.setFillColor(Color::White);
-	hiScoreText.setPosition(resolution.x-300, 0);
+	hiScoreText.setPosition(resolution.x-150, 0);
 	std::stringstream s;
 	s << "Hi Score:" << hiScore;
 	hiScoreText.setString(s.str());
 	// Zombies remaining
 	Text zombiesRemainingText;
 	zombiesRemainingText.setFont(font);
-	zombiesRemainingText.setCharacterSize(55);
+	zombiesRemainingText.setCharacterSize(30);
 	zombiesRemainingText.setFillColor(Color::White);
-	zombiesRemainingText.setPosition(resolution.x -100, resolution.y -100);// 1500, 980
+	zombiesRemainingText.setPosition(resolution.x -150, resolution.y -50);// 1500, 980
 	zombiesRemainingText.setString("Zombies: 100");
 	// Wave number
 	int wave = 0;
 	Text waveNumberText;
 	waveNumberText.setFont(font);
-	waveNumberText.setCharacterSize(55);
+	waveNumberText.setCharacterSize(30);
 	waveNumberText.setFillColor(Color::White);
-	waveNumberText.setPosition(resolution.x - 200, resolution.y - 100);//1250, 980
+	waveNumberText.setPosition(resolution.x - 300, resolution.y - 50);//1250, 980
 	waveNumberText.setString("Wave: 0");
 	// Health bar
 	RectangleShape healthBar;
 	healthBar.setFillColor(Color::Red);
-	healthBar.setPosition(resolution.x - 220, resolution.y - 100);
+	healthBar.setScale(0.7, 0.7);
+	healthBar.setPosition(resolution.x - 600, resolution.y - 50);
 
 	// When did we last update the HUD?
 	int framesSinceLastHUDUpdate = 0;
