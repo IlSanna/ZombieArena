@@ -32,7 +32,8 @@ int main() {
 	Texture textureBackground;
 	textureBackground.loadFromFile("src/Graphics/background_sheet.png");
 
-	int numZombies, numZombiesAlive;
+	int numZombies = 0;
+	int numZombiesAlive;
 	Zombie* zombies = new Zombie[5];//must be initialized the first time
 
 	Bullet bullets[100];
@@ -163,7 +164,7 @@ int main() {
 		while (window.pollEvent(event)) {
 			if (event.type == Event::KeyPressed) {
 				//if i press return while playing
-				if (event.key.code == Keyboard::Return && state == State::PLAYING) {
+				if (event.key.code == Keyboard::Return && state == State::PLAYING) {//&& state == State::PLAYING
 					state = State::PAUSED;
 				}
 				//if i press return while playing
