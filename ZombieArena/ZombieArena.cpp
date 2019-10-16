@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "ZombieArena.h"
 #include <sstream>
+#include <fstream>
 
 using namespace sf;
 
@@ -114,6 +115,13 @@ int main() {
 	scoreText.setCharacterSize(30);
 	scoreText.setFillColor(Color::White);
 	scoreText.setPosition(20, 0);
+
+	// Load the high-score from a text file
+	std::ifstream inputFile("gamedata/scores.txt");
+	if (inputFile.is_open()) {
+		inputFile >> hiScore;
+		inputFile.close();
+	}
 	// Hi Score
 	Text hiScoreText;
 	hiScoreText.setFont(font);
@@ -165,6 +173,16 @@ int main() {
 				}//new game
 				else if (event.key.code == Keyboard::Return && state == State::GAME_OVER) {
 					state = State::LEVELING_UP;
+					wave = 0;
+					score = 0;
+					// Prepare the gun and ammo for next game
+					currentBullet = 0;
+					bulletsSpare = 24;
+					bulletsInClip = 6;
+					clipSize = 6;
+					fireRate = 1;
+					// Reset the player's stats
+					player.resetPlayerStats();
 				}
 				if (state == State::PLAYING) {
 					// Reloading
@@ -215,18 +233,19 @@ int main() {
 		// Handle the LEVELING up state
 		if (state == State::LEVELING_UP) {
 			// Handle the player LEVELING up
-			if (event.key.code == Keyboard::Num1) { state = State::PLAYING; }
-			if (event.key.code == Keyboard::Num2) { state = State::PLAYING; }
-			if (event.key.code == Keyboard::Num3) { state = State::PLAYING; }
-			if (event.key.code == Keyboard::Num4) { state = State::PLAYING; }
-			if (event.key.code == Keyboard::Num5) { state = State::PLAYING; }
-			if (event.key.code == Keyboard::Num6) { state = State::PLAYING; }
+			if (event.key.code == Keyboard::Num1) { fireRate++; state = State::PLAYING; }
+			if (event.key.code == Keyboard::Num2) { clipSize += clipSize; state = State::PLAYING; }
+			if (event.key.code == Keyboard::Num3) { player.upgradeHealth(); state = State::PLAYING; }
+			if (event.key.code == Keyboard::Num4) { player.upgradeSpeed(); state = State::PLAYING; }
+			if (event.key.code == Keyboard::Num5) { healthPickup.upgrade(); state = State::PLAYING; }
+			if (event.key.code == Keyboard::Num6) { ammoPickup.upgrade(); state = State::PLAYING; }
 			
 			if (state == State::PLAYING) {
+				wave++;
 				// Prepare the level
 				// We will modify the next two lines later
-				arena.width = 500;
-				arena.height = 500;
+				arena.width = 500 * wave;
+				arena.height = 500 * wave;
 				arena.left = 0;
 				arena.top = 0;
 				int tileSize = createBackground(background,arena);
@@ -239,7 +258,7 @@ int main() {
 				ammoPickup.setArena(arena);
 
 				//init zombies
-				numZombies = 10;
+				numZombies = 5 * wave;
 				delete[] zombies;
 				zombies = createHorde(numZombies, arena);
 				numZombiesAlive = numZombies;
@@ -301,13 +320,15 @@ int main() {
 			}// End zombie being shot
 			// Have any zombies touched the player
 			for (int i = 0; i < numZombies; i++) {
-				if (player.getPosition().intersects
-				(zombies[i].getPosition()) && zombies[i].isAlive()) {
+				if (player.getPosition().intersects(zombies[i].getPosition()) && zombies[i].isAlive()) {
 					if (player.hit(gameTimeTotal)) {
 						// More here later
 					}
 					if (player.getHealth() <= 0) {
 						state = State::GAME_OVER;
+						std::ofstream outputFile("gamedata/scores.txt");
+						outputFile << hiScore;
+						outputFile.close();
 					}
 				}
 			}// End player touched
