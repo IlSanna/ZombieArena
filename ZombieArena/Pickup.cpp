@@ -16,6 +16,7 @@ Pickup::Pickup(int type) {
 		m_Value = AMMO_START_VALUE;
 	}
 	m_Sprite.setOrigin(25, 25);
+	m_Sprite.setScale(0.5, 0.5);
 	m_SecondsToLive = START_SECONDS_TO_LIVE;
 	m_SecondsToWait = START_WAIT_TIME;
 }
@@ -28,7 +29,7 @@ void Pickup::setArena(IntRect arena) {
 	spawn();
 }
 void Pickup::spawn() {
-	// Spawn at a random location
+	// Spawn at a random location,is not counting the walls TODO
 	srand((int)time(0) / m_Type);
 	int x = (rand() % m_Arena.width);
 	srand((int)time(0) * m_Type);

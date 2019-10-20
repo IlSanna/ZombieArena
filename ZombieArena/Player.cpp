@@ -85,7 +85,7 @@ void Player::upgradeHealth() {
 }
 
 void Player::increaseHealthLevel(int amount) {
-	m_MaxHealth += amount;
+	m_Health += amount;
 	// But not beyond the maximum
 	if (m_Health > m_MaxHealth) {
 		m_Health = m_MaxHealth;

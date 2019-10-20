@@ -57,9 +57,13 @@ void Zombie::update(float elapsedTime, Vector2f playerLocation) {
 
 bool Zombie::hit() {
 	m_Health--;
-	if (m_Health < 0) {//is dead?
-		m_Alive = false;
+	if (m_Health <= 0) {//is dead?
+		Vector2f tmpPos = m_Sprite.getPosition();
 		m_Sprite = Sprite(TextureHolder::GetTexture("src/Graphics/blood.png"));
+		m_Sprite.setPosition(tmpPos);
+		m_Sprite.setOrigin(25, 25);
+		m_Sprite.setScale(0.5, 0.5);
+		m_Alive = false;
 		return true;
 	}
 	return false;

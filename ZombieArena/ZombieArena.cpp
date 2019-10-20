@@ -294,7 +294,9 @@ int main() {
 			// Update the pickups
 			healthPickup.update(deltaTimeAsSeconds);
 			ammoPickup.update(deltaTimeAsSeconds);
+
 			// Collision detection
+
 			// Have any zombies been shot?
 			for (int i = 0; i < 100; i++) {//100 is the number of bullets
 				for (int j = 0; j < numZombies; j++) {
